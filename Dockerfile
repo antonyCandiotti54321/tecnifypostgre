@@ -22,4 +22,4 @@ COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # 8️⃣ Definimos variables de entorno para la conexión a PostgreSQL (opcional)
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://d
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cv6fop8gph6c73dmosq0-a:5432/dbtecnify
