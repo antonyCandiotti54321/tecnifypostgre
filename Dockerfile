@@ -1,14 +1,25 @@
-# Usar una imagen base con JDK 17
-FROM eclipse-temurin:17-jdk
+# 1️⃣ Usamos la imagen oficial de Gradle con Java 17
+FROM gradle:8.5-jdk17 AS build
 
-# Establecer el directorio de trabajo en /app
+# 2️⃣ Establecemos el directorio de trabajo
 WORKDIR /app
 
-# Copiar el archivo JAR generado por Gradle
-COPY build/libs/*.jar app.jar
+# 3️⃣ Copiamos el código fuente
+COPY . .
 
-# Exponer el puerto en el que se ejecutará la aplicación
+# 4️⃣ Construimos el proyecto (genera el JAR)
+RUN gradle build --no-daemon
+
+# 5️⃣ Usamos una imagen más liviana de OpenJDK 17 para ejecutar el JAR
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# 6️⃣ Copiamos el JAR generado en la fase de compilación
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# 7️⃣ Exponemos el puerto 8080
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 8️⃣ Definimos variables de entorno para la conexión a PostgreSQL (opcional)
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://d
