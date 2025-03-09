@@ -4,22 +4,28 @@ FROM gradle:8.5-jdk17 AS build
 # 2️⃣ Establecemos el directorio de trabajo
 WORKDIR /app
 
-# 3️⃣ Copiamos el código fuente
-COPY . .
+# 3️⃣ Copiamos solo los archivos de configuración de Gradle primero (aprovechando la cache)
+COPY build.gradle settings.gradle ./
 
-# 4️⃣ Construimos el proyecto (genera el JAR)
+# 4️⃣ Copiamos el código fuente
+COPY src ./src
+
+# 5️⃣ Construimos el proyecto (genera el JAR)
 RUN gradle build --no-daemon
 
-# 5️⃣ Usamos una imagen más liviana de OpenJDK 17 para ejecutar el JAR
+# 6️⃣ Usamos una imagen más liviana de OpenJDK 17 para ejecutar el JAR
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-# 6️⃣ Copiamos el JAR generado en la fase de compilación
+# 7️⃣ Copiamos el archivo JAR desde la etapa de build
 COPY --from=build /app/build/libs/*.jar app.jar
 
-# 7️⃣ Exponemos el puerto 8080
+# 8️⃣ Exponemos el puerto 8080
 EXPOSE 8080
 
-# 8️⃣ Definimos variables de entorno para la conexión a PostgreSQL (opcional)
+# 9️⃣ Ejecutamos la aplicación asegurando el puerto correcto
+CMD ["java", "-jar", "app.jar", "--server.port=8080"]
+
+# 10️⃣ Definimos variables de entorno para la conexión a PostgreSQL
 ENV SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cv6fop8gph6c73dmosq0-a:5432/dbtecnify
