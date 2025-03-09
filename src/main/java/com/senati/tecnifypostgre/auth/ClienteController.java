@@ -46,7 +46,10 @@ public class ClienteController{
     //enviar Recibir mensaje
     @PostMapping(value="enviarMensaje")
     public ResponseEntity<Mensaje> register(@RequestBody MensajeRequest request){
-        mensajeService.saveMensaje(request);
+        // Obtener el correo desde el contexto de seguridad
+        String correo = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+
+        mensajeService.saveMensaje(correo, request);
         return ResponseEntity.ok().build(); // Solo devuelve un estado 200 OK sin cuerpo
     }
 

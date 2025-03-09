@@ -17,9 +17,9 @@ public class MensajeService {
 
 
 
-    public Mensaje saveMensaje(MensajeRequest request)
+    public Mensaje saveMensaje(String correo, MensajeRequest request)
     {
-        User remitente = userRepository.findById(request.getIdRemitente())
+        User remitente = userRepository.findByUsername (correo)
                 .orElseThrow(() -> new RuntimeException("Remitente no encontrado"));
         User receptor = userRepository.findById(request.getIdReceptor())
                 .orElseThrow(() -> new RuntimeException("Receptor no encontrado"));

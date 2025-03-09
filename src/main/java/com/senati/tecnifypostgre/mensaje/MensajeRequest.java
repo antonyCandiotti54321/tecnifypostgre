@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MensajeRequest {
-    Long idRemitente;
     Long idReceptor;
     String mensaje;
 }

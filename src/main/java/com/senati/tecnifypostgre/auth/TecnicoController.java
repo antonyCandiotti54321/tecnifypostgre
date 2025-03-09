@@ -50,8 +50,10 @@ public class TecnicoController {
     //enviar Recibir mensaje
     @PostMapping(value="enviarMensaje")
     public ResponseEntity<Mensaje> register(@RequestBody MensajeRequest request){
+        // Obtener el correo desde el contexto de seguridad
+        String correo = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
-        mensajeService.saveMensaje(request);
+        mensajeService.saveMensaje(correo, request);
 
         return ResponseEntity.ok().build();
     }
