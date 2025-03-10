@@ -32,14 +32,38 @@ public class User implements UserDetails {
     @Column(nullable = false)
     String password;
 
-    @Column(nullable = false)
-    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
-    String nombre;
+    @Column(nullable = false, length = 50)
+    private String nombre;
 
-    String profesion;
-    String descripcion;
+    @Column(length = 50)
+    private String apellido;
 
-    Double precio;
+    private Integer celular;
+    private Integer edad;
+
+    @Column(length = 100)
+    private String provincia;
+
+    @Column(length = 100)
+    private String distrito;
+
+    @Column(length = 255)
+    private String ubicacion;
+
+    @Column(length = 100)
+    private String especialidad;
+
+    private Integer experiencia;
+
+    @Column(length = 255)
+    private String certificaciones;
+
+    @Column(length = 50)
+    private String disponibilidad;
+
+    private Boolean vehiculo;
+    private Double radio;
+    private Double tarifa;
 
     @DecimalMin(value = "-90.0", message = "Latitud mínima permitida: -90")
     @DecimalMax(value = "90.0", message = "Latitud máxima permitida: 90")
